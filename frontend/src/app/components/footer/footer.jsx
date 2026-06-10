@@ -165,7 +165,9 @@ export default function Footer() {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <span>Calle Principal 123, Ciudad</span>
+                <span>
+                  Pais feliz, Casa de Gominola de la Calle de la Piruleta
+                </span>
               </li>
               <li className="flex items-center gap-2">
                 <svg
