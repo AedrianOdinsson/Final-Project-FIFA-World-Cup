@@ -3,7 +3,6 @@ import styles from "./settings.module.css";
 export default function SettingsPage() {
   return (
     <div className={styles.page}>
-
       <h1 className={styles.title}>Configuración del Sistema</h1>
       <p className={styles.subtitle}>
         Administre sus credenciales, preferencias de interfaz y parámetros de
@@ -22,7 +21,9 @@ export default function SettingsPage() {
             <span className={styles.profileMeta}>
               Gestor de Operaciones Senior • ID: TF-4492
             </span>
-            <button className={styles.changePhotoBtn}>Cambiar Foto de Perfil</button>
+            <button className={styles.changePhotoBtn}>
+              Cambiar Foto de Perfil
+            </button>
           </div>
           <div className={styles.statusBadge}>
             <span className={styles.statusLabel}>ESTADO</span>
@@ -41,11 +42,18 @@ export default function SettingsPage() {
           </div>
           <div className={styles.formGroup}>
             <label className={styles.label}>CORREO ELECTRÓNICO</label>
-            <input className={styles.input} defaultValue="j.rodriguez@transflow.tech" />
+            <input
+              className={styles.input}
+              defaultValue="j.rodriguez@transflow.tech"
+            />
           </div>
           <div className={styles.formGroup}>
             <label className={styles.label}>ROL OPERATIVO</label>
-            <input className={`${styles.input} ${styles.inputDisabled}`} defaultValue="Fleet Manager" disabled />
+            <input
+              className={`${styles.input} ${styles.inputDisabled}`}
+              defaultValue="Fleet Manager"
+              disabled
+            />
           </div>
           <div className={styles.formGroup}>
             <label className={styles.label}>NÚMERO DE TELÉFONO</label>
@@ -88,7 +96,6 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

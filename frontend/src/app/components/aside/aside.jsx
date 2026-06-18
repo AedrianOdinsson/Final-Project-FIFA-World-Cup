@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-// ── Iconos como componentes ──────────────────────────────────────────────────
-
 function IconDashboard() {
   return (
     <svg
@@ -23,7 +21,6 @@ function IconDashboard() {
     </svg>
   );
 }
-
 function IconRoutes() {
   return (
     <svg
@@ -42,7 +39,6 @@ function IconRoutes() {
     </svg>
   );
 }
-
 function IconTruck() {
   return (
     <svg
@@ -66,7 +62,6 @@ function IconTruck() {
     </svg>
   );
 }
-
 function IconReport() {
   return (
     <svg
@@ -85,7 +80,6 @@ function IconReport() {
     </svg>
   );
 }
-
 function IconHelp() {
   return (
     <svg
@@ -104,7 +98,6 @@ function IconHelp() {
     </svg>
   );
 }
-
 function IconSettings() {
   return (
     <svg
@@ -129,27 +122,6 @@ function IconSettings() {
   );
 }
 
-function IconUser() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-5 h-5 text-gray-500"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-      />
-    </svg>
-  );
-}
-
-// ── Datos de navegación (sin JSX) ────────────────────────────────────────────
-
 const navLinks = [
   { href: "/dashboard", label: "Panel de Control", Icon: IconDashboard },
   { href: "/rutas", label: "Gestión de Rutas", Icon: IconRoutes },
@@ -162,20 +134,18 @@ const bottomLinks = [
   { href: "/configuracion", label: "Configuración", Icon: IconSettings },
 ];
 
-// ── Componente principal ─────────────────────────────────────────────────────
-
 export default function Aside() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-60 h-screen bg-white border-r border-gray-200 flex flex-col shrink-0">
+    <aside className="w-60 h-screen bg-[#0f0f0f] border-r border-gray-800 flex flex-col shrink-0">
       {/* Logo */}
-      <div className="px-5 py-5 border-b border-gray-100">
+      <div className="px-5 py-5 border-b border-gray-800">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center shrink-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5 text-white"
+              className="w-5 h-5 text-black"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -189,8 +159,10 @@ export default function Aside() {
             </svg>
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-bold text-gray-900">TransFlow</span>
-            <span className="text-xs text-gray-400">Operaciones de Flota</span>
+            <span className="text-sm font-black text-white uppercase tracking-tight">
+              TransFlow
+            </span>
+            <span className="text-xs text-gray-500">Operaciones de Flota</span>
           </div>
         </Link>
       </div>
@@ -205,15 +177,15 @@ export default function Aside() {
               href={href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 group ${
                 isActive
-                  ? "bg-blue-50 text-blue-600 border-r-2 border-blue-600"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  ? "bg-white text-black"
+                  : "text-gray-400 hover:bg-[#1a1a1a] hover:text-white"
               }`}
             >
               <span
                 className={
                   isActive
-                    ? "text-blue-600"
-                    : "text-gray-400 group-hover:text-gray-600"
+                    ? "text-black"
+                    : "text-gray-600 group-hover:text-white"
                 }
               >
                 <Icon />
@@ -224,29 +196,8 @@ export default function Aside() {
         })}
       </nav>
 
-      {/* Botón Nuevo Despacho */}
-      <div className="px-4 py-4">
-        <button className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2.5 rounded-lg transition-colors duration-150">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-4 h-4"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2.5}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-          Nuevo Despacho
-        </button>
-      </div>
-
       {/* Links inferiores */}
-      <div className="px-3 pb-3 flex flex-col gap-1 border-t border-gray-100 pt-3">
+      <div className="px-3 pb-3 flex flex-col gap-1 border-t border-gray-800 pt-3">
         {bottomLinks.map(({ href, label, Icon }) => {
           const isActive = pathname === href;
           return (
@@ -255,15 +206,15 @@ export default function Aside() {
               href={href}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 group ${
                 isActive
-                  ? "bg-blue-50 text-blue-600"
-                  : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                  ? "bg-white text-black"
+                  : "text-gray-500 hover:bg-[#1a1a1a] hover:text-white"
               }`}
             >
               <span
                 className={
                   isActive
-                    ? "text-blue-600"
-                    : "text-gray-400 group-hover:text-gray-600"
+                    ? "text-black"
+                    : "text-gray-600 group-hover:text-white"
                 }
               >
                 <Icon />
@@ -274,17 +225,17 @@ export default function Aside() {
         })}
       </div>
 
-      {/* Perfil de usuario */}
-      <div className="px-4 py-4 border-t border-gray-200">
+      {/* Perfil */}
+      <div className="px-4 py-4 border-t border-gray-800">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center shrink-0">
-            <IconUser />
+          <div className="w-9 h-9 rounded-full bg-[#1a1a1a] border border-gray-700 flex items-center justify-center shrink-0">
+            <span className="text-xs font-bold text-white">MC</span>
           </div>
           <div className="flex flex-col leading-tight min-w-0">
-            <span className="text-sm font-semibold text-gray-900 truncate">
+            <span className="text-sm font-semibold text-white truncate">
               Marcus Chen
             </span>
-            <span className="text-xs text-gray-400 truncate">
+            <span className="text-xs text-gray-500 truncate">
               Director de Flota
             </span>
           </div>
