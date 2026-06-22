@@ -3,7 +3,6 @@ import "./globals.css";
 import Aside from "./components/aside/aside";
 import Footer from "./components/footer/footer";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -21,17 +20,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="h-screen flex overflow-hidden"></body>
-      <Aside />
-      <main className="flex-1 flex flex-col overflow-y-auto bg-white">
-        <div className="flex-1 w-full">
-
-          {children}
-        </div>
-        <Footer />
-      </main>
+      <body className="h-screen flex overflow-hidden">
+        <main className="flex-1 flex flex-col overflow-y-auto bg-white">
+          <div className="flex-1 w-full flex flex-col">{children}</div>
+        </main>
+      </body>
     </html>
   );
 }
