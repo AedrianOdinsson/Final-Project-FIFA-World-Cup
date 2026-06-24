@@ -1,0 +1,410 @@
+"use client";
+
+import {
+  Users,
+  Building2,
+  Target,
+  Map as MapIcon,
+  LifeBuoy,
+  LogOut,
+  Plane,
+  Flag,
+  Goal,
+  Plus,
+  Minus,
+  Crosshair,
+} from "lucide-react";
+
+/**
+ * ArgentinaTeamProfile
+ * --------------------
+ * Conversión 1:1 a React + Tailwind del archivo wc2026_argentina_profile.html
+ *
+ * NOTA PARA BACKEND:
+ * - `team`, `fatigue`, `nextDeployment` e `itinerary` son los bloques de data
+ *   mockeada. Reemplazar por la respuesta real del endpoint del equipo
+ *   (ej: GET /api/teams/ARG) manteniendo el mismo shape o adaptando el mapeo.
+ */
+
+const navItems = [
+  { label: "Teams", icon: Users, active: true },
+  { label: "Host Cities", icon: Building2, active: false },
+  { label: "Matches", icon: Target, active: false },
+  { label: "Map", icon: MapIcon, active: false },
+];
+
+const team = {
+  name: "ARGENTINA",
+  flag: "🇦🇷",
+};
+
+const fatigue = {
+  totalKm: "4,120",
+  metrics: [
+    {
+      label: "Flight Time",
+      value: "8h 45m",
+      percent: 75,
+      color: "#4a7cf7",
+      danger: false,
+    },
+    {
+      label: "Timezone Shifts",
+      value: "2 Zones",
+      percent: 40,
+      color: "#666666",
+      danger: false,
+    },
+    {
+      label: "Climate Variance (Temp)",
+      value: "High (Δ12°C)",
+      percent: 88,
+      color: "#ef4444",
+      danger: true,
+    },
+  ],
+};
+
+const nextDeployment = {
+  origin: { code: "MIA", sub: "Base Camp, FL" },
+  destination: { code: "DFW", sub: "Match 1, TX" },
+  duration: "3h 15m",
+  departure: "14 JUN, 09:00 EST",
+  carrier: "Charter FL-882",
+};
+
+const itinerary = [
+  {
+    seq: "00",
+    icon: Flag,
+    location: "Miami, FL",
+    purpose: "Primary Base Camp",
+    dates: "01 JUN – 14 JUN",
+    facility: "Inter Miami CF Stadium",
+  },
+  {
+    seq: "01",
+    icon: Goal,
+    location: "Dallas, TX",
+    purpose: "Match 1 vs. SAU",
+    dates: "14 JUN – 16 JUN",
+    facility: "AT&T Stadium",
+  },
+  {
+    seq: "02",
+    icon: Goal,
+    location: "Houston, TX",
+    purpose: "Match 2 vs. MEX",
+    dates: "16 JUN – 20 JUN",
+    facility: "NRG Stadium",
+  },
+];
+
+export default function ArgentinaTeamProfile() {
+  return (
+    <div className="flex h-[780px] overflow-hidden rounded-2xl bg-[#0d0d0d] text-[13px] text-white">
+      {/* SIDEBAR */}
+      <aside className="flex h-full w-[220px] flex-shrink-0 flex-col border-r border-[#2a2a2a]/50 bg-[#111111]">
+        <div className="flex-shrink-0 px-4 pb-4 pt-3.5">
+          <div className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-lg border border-[#333333]/50 bg-[#1a1a1a]">
+            <Goal size={18} className="text-[#aaaaaa]" />
+          </div>
+          <div className="text-[13px] font-semibold text-[#e8e8e8]">
+            FIFA World Cup
+          </div>
+          <div className="mt-px text-[11px] text-[#555555]">
+            2026 Tracking
+          </div>
+        </div>
+
+        <nav className="flex-shrink-0 py-2">
+          {navItems.map(({ label, icon: Icon, active }) => (
+            <div
+              key={label}
+              className={`flex cursor-pointer items-center gap-2.5 px-4 py-2.5 ${
+                active
+                  ? "bg-[#1c1c1c] text-white"
+                  : "text-[#777777] hover:bg-[#1a1a1a] hover:text-[#cccccc]"
+              }`}
+            >
+              <Icon size={17} />
+              {label}
+            </div>
+          ))}
+        </nav>
+
+        <div className="min-h-0 flex-1" />
+
+        <div className="flex-shrink-0 border-t border-[#2a2a2a]/50 px-4 pb-4 pt-3">
+          <button className="mb-1 block w-full rounded-md bg-white py-[11px] text-center text-[12px] font-semibold tracking-[0.07em] text-black">
+            LIVE UPDATES
+          </button>
+          <div className="flex cursor-pointer items-center gap-2.5 py-2.5 text-[13px] text-[#666666]">
+            <LifeBuoy size={17} /> Support
+          </div>
+          <div className="flex cursor-pointer items-center gap-2.5 py-2.5 text-[13px] text-[#666666]">
+            <LogOut size={17} /> Logout
+          </div>
+        </div>
+      </aside>
+
+      {/* MAIN */}
+      <div className="flex flex-1 flex-col overflow-y-auto bg-[#0d0d0d]">
+        {/* HEADER */}
+        <div className="flex-shrink-0 border-b border-[#1e1e1e]/50 px-6 pb-4 pt-5">
+          <div className="mb-2.5 flex items-center gap-1.5 text-[10px] tracking-[0.12em] text-[#555555]">
+            TEAM LOGISTICS PROFILE
+            <span className="inline-block h-[7px] w-[7px] rounded-full bg-[#4a7cf7]" />
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-[26px]">{team.flag}</span>
+              <span className="text-[28px] font-extrabold tracking-[0.04em] text-white">
+                {team.name}
+              </span>
+            </div>
+            <div className="flex gap-2.5">
+              <button className="flex items-center gap-1.5 rounded-md border border-[#333333] px-3.5 py-2 text-[12px] text-[#cccccc]">
+                <Plane size={13} /> Group Stage Route
+              </button>
+              <button className="rounded-md border border-[#555555] px-3.5 py-2 text-[12px] font-semibold tracking-[0.05em] text-white">
+                EXPORT ITINERARY
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* BODY GRID */}
+        <div className="grid flex-shrink-0 grid-cols-1 gap-4 px-6 py-4 lg:grid-cols-[1fr_280px]">
+          {/* MAP CARD */}
+          <div className="overflow-hidden rounded-[10px] border border-[#1e1e1e]/50 bg-[#111111]">
+            <div className="flex items-center justify-between border-b border-[#1e1e1e]/50 px-4 py-3">
+              <span className="text-[10px] font-semibold tracking-[0.1em] text-[#888888]">
+                GEOSPATIAL ROUTING
+              </span>
+              <div className="flex items-center gap-1.5 text-[10px] text-[#4a7cf7]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#4a7cf7]" />
+                LIVE TRACKING ACTIVE
+              </div>
+            </div>
+            <div className="relative h-[320px] bg-[#0d0f1a]">
+              <svg
+                width="100%"
+                height="100%"
+                viewBox="0 0 460 320"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect width="460" height="320" fill="#0d0f1a" />
+                <ellipse cx="230" cy="160" rx="140" ry="140" fill="#111320" stroke="#1a1c2a" strokeWidth="1" />
+                <ellipse cx="230" cy="160" rx="140" ry="140" fill="none" stroke="#1e2030" strokeWidth="0.5" />
+                <ellipse cx="230" cy="160" rx="100" ry="140" fill="none" stroke="#1a1c28" strokeWidth="0.5" />
+                <ellipse cx="230" cy="160" rx="140" ry="70" fill="none" stroke="#1a1c28" strokeWidth="0.5" />
+                <path
+                  d="M150,80 C160,75 175,78 180,85 C185,78 195,76 200,82 C205,78 215,80 212,90 C220,88 228,92 225,100 C232,98 238,104 233,112 C240,112 244,118 238,124 C244,124 246,130 241,134 C237,130 230,128 228,122 C222,126 214,124 214,116 C208,120 200,118 202,110 C196,112 190,108 193,100 C186,100 182,94 188,88 C183,84 182,78 188,76 L150,80Z"
+                  fill="#1e2235"
+                  opacity="0.7"
+                />
+                <path
+                  d="M200,100 C208,96 218,98 220,106 C226,104 233,108 230,116 C236,116 240,122 234,126 C228,130 218,128 216,120 C210,124 202,120 204,112 C198,112 196,104 202,100Z"
+                  fill="#252840"
+                  opacity="0.8"
+                />
+                <path
+                  d="M155,140 C162,135 172,136 175,143 C180,140 188,142 187,150 C193,149 197,154 193,160 C199,160 201,166 196,169 C190,172 182,169 181,162 C175,165 168,161 170,154 C164,154 160,148 165,143Z"
+                  fill="#1e2235"
+                  opacity="0.6"
+                />
+                <line x1="285" y1="118" x2="198" y2="183" stroke="#4a9ef7" strokeWidth="1.5" />
+                <circle cx="285" cy="118" r="5" fill="none" stroke="#fff" strokeWidth="1.5" />
+                <circle cx="285" cy="118" r="2.5" fill="#fff" />
+                <circle cx="198" cy="183" r="5" fill="none" stroke="#4a9ef7" strokeWidth="2" />
+                <circle cx="198" cy="183" r="2.5" fill="#4a9ef7" />
+                <circle cx="175" cy="218" r="4" fill="none" stroke="#444" strokeWidth="1.5" />
+                <circle cx="175" cy="218" r="2" fill="#333" />
+                <text x="293" y="115" fill="#ddd" fontSize="10" fontWeight="600">
+                  MIAMI (BASE)
+                </text>
+                <text x="206" y="180" fill="#4a9ef7" fontSize="10" fontWeight="600">
+                  DALLAS (M1)
+                </text>
+                <text x="183" y="220" fill="#555" fontSize="10">
+                  HOUSTON (M2)
+                </text>
+              </svg>
+
+              <div className="absolute bottom-3 right-3 flex flex-col gap-1">
+                <button className="flex h-7 w-7 items-center justify-center rounded border border-[#2a2e3a] bg-[#1a1c2a] text-[14px] text-[#888888]">
+                  <Plus size={14} />
+                </button>
+                <button className="flex h-7 w-7 items-center justify-center rounded border border-[#2a2e3a] bg-[#1a1c2a] text-[14px] text-[#888888]">
+                  <Minus size={14} />
+                </button>
+                <button className="flex h-7 w-7 items-center justify-center rounded border border-[#2a2e3a] bg-[#1a1c2a] text-[#888888]">
+                  <Crosshair size={13} />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT COL */}
+          <div className="flex flex-col gap-3">
+            {/* FATIGUE */}
+            <div className="rounded-[10px] border border-[#1e1e1e]/50 bg-[#111111] p-4">
+              <div className="mb-3 text-[10px] font-semibold tracking-[0.1em] text-[#666666]">
+                CUMULATIVE FATIGUE INDEX
+              </div>
+              <div className="mb-1 text-[36px] font-extrabold leading-none text-white">
+                {fatigue.totalKm}{" "}
+                <span className="ml-1 text-[13px] font-normal text-[#555555]">
+                  KM TOTAL
+                </span>
+              </div>
+
+              {fatigue.metrics.map((m) => (
+                <div key={m.label} className="mt-3">
+                  <div className="mb-1.5 flex items-center justify-between text-[12px] text-[#777777]">
+                    <span>{m.label}</span>
+                    <span className={m.danger ? "text-[#ef4444]" : "text-[#bbbbbb]"}>
+                      {m.value}
+                    </span>
+                  </div>
+                  <div className="h-[3px] rounded-full bg-[#1e1e2a]">
+                    <div
+                      className="h-[3px] rounded-full"
+                      style={{ width: `${m.percent}%`, background: m.color }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* DEPLOYMENT */}
+            <div className="rounded-[10px] border border-[#1e1e1e]/50 bg-[#111111] p-4">
+              <div className="mb-3.5 flex items-center gap-1.5">
+                <span className="h-[7px] w-[7px] rounded-full bg-[#ef4444]" />
+                <span className="text-[11px] font-bold tracking-[0.1em] text-[#cccccc]">
+                  NEXT DEPLOYMENT
+                </span>
+                <Plane size={16} className="ml-auto text-[#444444]" />
+              </div>
+
+              <div className="mb-3.5 flex items-start justify-between">
+                <div>
+                  <div className="mb-0.5 text-[10px] tracking-[0.05em] text-[#555555]">
+                    ORIGIN
+                  </div>
+                  <div className="text-[22px] font-extrabold leading-tight text-white">
+                    {nextDeployment.origin.code}
+                  </div>
+                  <div className="mt-0.5 text-[10px] text-[#555555]">
+                    {nextDeployment.origin.sub}
+                  </div>
+                </div>
+                <div className="pt-1.5 text-center">
+                  <div className="mb-0.5 text-[11px] text-[#777777]">
+                    {nextDeployment.duration}
+                  </div>
+                  <div className="text-[14px] text-[#888888]">→</div>
+                </div>
+                <div className="text-right">
+                  <div className="mb-0.5 text-[10px] tracking-[0.05em] text-[#555555]">
+                    DESTINATION
+                  </div>
+                  <div className="text-[22px] font-extrabold leading-tight text-white">
+                    {nextDeployment.destination.code}
+                  </div>
+                  <div className="mt-0.5 text-[10px] text-[#555555]">
+                    {nextDeployment.destination.sub}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2 border-t border-[#1e1e1e]/50 pt-3">
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] tracking-[0.06em] text-[#555555]">
+                    SCHEDULED DEPARTURE
+                  </div>
+                  <div className="text-[12px] font-medium text-[#cccccc]">
+                    {nextDeployment.departure}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="text-[10px] tracking-[0.06em] text-[#555555]">
+                    LOGISTICS CARRIER
+                  </div>
+                  <div className="text-[12px] font-medium text-[#cccccc]">
+                    {nextDeployment.carrier}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ITINERARY */}
+        <div className="flex-shrink-0 px-6 pb-6">
+          <div className="border-t border-[#1e1e1e]/50 pb-2.5 pt-3.5 text-[11px] font-bold tracking-[0.1em] text-[#888888]">
+            ITINERARY BREAKDOWN
+          </div>
+          <table className="w-full border-collapse">
+            <thead>
+              <tr>
+                <th className="border-b border-[#1e1e1e]/50 px-3 py-2.5 text-left text-[10px] font-semibold tracking-[0.08em] text-[#444444]">
+                  SEQ
+                </th>
+                <th className="border-b border-[#1e1e1e]/50 px-3 py-2.5 text-left text-[10px] font-semibold tracking-[0.08em] text-[#444444]">
+                  LOCATION
+                </th>
+                <th className="border-b border-[#1e1e1e]/50 px-3 py-2.5 text-left text-[10px] font-semibold tracking-[0.08em] text-[#444444]">
+                  PURPOSE
+                </th>
+                <th className="border-b border-[#1e1e1e]/50 px-3 py-2.5 text-left text-[10px] font-semibold tracking-[0.08em] text-[#444444]">
+                  DATES
+                </th>
+                <th className="border-b border-[#1e1e1e]/50 px-3 py-2.5 text-right text-[10px] font-semibold tracking-[0.08em] text-[#444444]">
+                  FACILITY METRICS
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {itinerary.map((row) => {
+                const Icon = row.icon;
+                return (
+                  <tr
+                    key={row.seq}
+                    className="border-b border-[#1a1a1a]/60 hover:bg-[#111111]"
+                  >
+                    <td className="px-3 py-3.5 align-middle text-[12px] text-[#444444]">
+                      {row.seq}
+                    </td>
+                    <td className="px-3 py-3.5 align-middle">
+                      <div className="flex items-center gap-2">
+                        <div className="flex h-[26px] w-[26px] flex-shrink-0 items-center justify-center rounded-full border border-[#2a2e3a] bg-[#1a1c2a]">
+                          <Icon size={12} className="text-[#777777]" />
+                        </div>
+                        <span className="font-medium text-[#dddddd]">
+                          {row.location}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-3 py-3.5 align-middle text-[13px] text-[#888888]">
+                      {row.purpose}
+                    </td>
+                    <td className="px-3 py-3.5 align-middle text-[13px] text-[#888888]">
+                      {row.dates}
+                    </td>
+                    <td className="px-3 py-3.5 text-right align-middle">
+                      <span className="whitespace-nowrap rounded border border-[#2a2e3a]/50 bg-[#1a1c2a] px-2.5 py-1 text-[11px] text-[#888888]">
+                        {row.facility}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

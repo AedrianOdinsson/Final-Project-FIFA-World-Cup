@@ -4,7 +4,6 @@ import Aside from "./components/aside/aside";
 import Footer from "./components/footer/footer";
 import Link from "next/link";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,32 +21,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="h-screen flex flex-col overflow-hidden">
-
-        <header className="flex items-center justify-end gap-3 px-6 py-3 bg-black border-b border-gray-200">
-          <Link href="/login">
-            <button className="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-              Login
-            </button>
-          </Link>
-          <Link href="/register">
-            <button className="px-4 py-2 text-sm font-medium text-white bg-black rounded-lg hover:bg-gray-800 transition-colors">
-              Register
-            </button>
-          </Link>
-        </header>
-
-        <div className="flex flex-1 overflow-hidden">
-          <Aside />
-          <main className="flex-1 flex flex-col overflow-y-auto bg-white">
-            <div className="flex-1 w-full">
-              {children}
-            </div>
-            <Footer />
-          </main>
-        </div>
-
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body className="h-screen flex overflow-hidden">
+        <main className="flex-1 flex flex-col overflow-y-auto bg-white">
+          <div className="flex-1 w-full flex flex-col">{children}</div>
+        </main>
       </body>
     </html>
   );
