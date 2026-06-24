@@ -1,10 +1,47 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+
+  // ── Añadido ──
+  const [nombre, setNombre] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleRegister() {
+    setError("");
+    if (password !== confirm) {
+      setError("Las contraseñas no coinciden");
+      return;
+    }
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:5000/api/user/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: nombre, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.msg || "Error al registrarse");
+        return;
+      }
+      router.push("/login");
+    } catch {
+      setError("No se pudo conectar con el servidor");
+    } finally {
+      setLoading(false);
+    }
+  }
+  // ── Fin añadido ──
 
   return (
     <div className="min-h-screen flex">
@@ -39,6 +76,13 @@ export default function RegisterPage() {
             predicción.
           </p>
 
+          {/* ── Añadido: mensaje de error ── */}
+          {error && (
+            <p className="mb-5 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm">
+              {error}
+            </p>
+          )}
+
           <div className="flex flex-col gap-5">
             {/* Nombre */}
             <div className="flex flex-col gap-1.5">
@@ -63,6 +107,8 @@ export default function RegisterPage() {
                 <input
                   type="text"
                   placeholder="Ej. Carlos Mendoza"
+                  value={nombre}
+                  onChange={(e) => setNombre(e.target.value)}
                   className="bg-transparent text-white text-sm placeholder-gray-600 outline-none w-full"
                 />
               </div>
@@ -91,6 +137,8 @@ export default function RegisterPage() {
                 <input
                   type="email"
                   placeholder="correo@ejemplo.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-transparent text-white text-sm placeholder-gray-600 outline-none w-full"
                 />
               </div>
@@ -119,6 +167,8 @@ export default function RegisterPage() {
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="bg-transparent text-white text-sm placeholder-gray-600 outline-none w-full"
                 />
                 <button
@@ -171,6 +221,8 @@ export default function RegisterPage() {
                 <input
                   type={showConfirm ? "text" : "password"}
                   placeholder="••••••••"
+                  value={confirm}
+                  onChange={(e) => setConfirm(e.target.value)}
                   className="bg-transparent text-white text-sm placeholder-gray-600 outline-none w-full"
                 />
                 <button
@@ -200,9 +252,13 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* Botón */}
-            <button className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-black font-bold text-sm py-4 rounded-lg transition-colors duration-150 mt-1">
-              Registrarse
+            {/* Botón — añadido onClick y disabled */}
+            <button
+              onClick={handleRegister}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-black font-bold text-sm py-4 rounded-lg transition-colors duration-150 mt-1 disabled:opacity-50"
+            >
+              {loading ? "Registrando..." : "Registrarse"}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-4 h-4"

@@ -1,9 +1,37 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleLogin() {
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.msg || "Credenciales inválidas");
+        return;
+      }
+      router.push("/dashboard");
+    } catch {
+      setError("No se pudo conectar con el servidor");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen flex">
@@ -37,6 +65,13 @@ export default function LoginPage() {
             Accede a tu cuenta para consultar métricas y seguimiento del torneo.
           </p>
 
+          {/* ── Añadido: mensaje de error ── */}
+          {error && (
+            <p className="mb-5 px-4 py-2 bg-red-500/20 text-red-400 rounded-lg text-sm">
+              {error}
+            </p>
+          )}
+
           <div className="flex flex-col gap-5">
             {/* Correo */}
             <div className="flex flex-col gap-1.5">
@@ -58,9 +93,12 @@ export default function LoginPage() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
+                {/* ── Añadido: value y onChange ── */}
                 <input
                   type="email"
                   placeholder="correo@ejemplo.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-transparent text-white text-sm placeholder-gray-600 outline-none w-full"
                 />
               </div>
@@ -94,9 +132,12 @@ export default function LoginPage() {
                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                   />
                 </svg>
+                {/* ── Añadido: value y onChange ── */}
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="bg-transparent text-white text-sm placeholder-gray-600 outline-none w-full"
                 />
                 <button
@@ -126,9 +167,13 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Botón */}
-            <button className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-black font-bold text-sm py-4 rounded-lg transition-colors duration-150 mt-1">
-              Iniciar Sesión
+            {/* ── Botón: añadido onClick, disabled y texto dinámico ── */}
+            <button
+              onClick={handleLogin}
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-black font-bold text-sm py-4 rounded-lg transition-colors duration-150 mt-1 disabled:opacity-50"
+            >
+              {loading ? "Entrando..." : "Iniciar Sesión"}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="w-4 h-4"
