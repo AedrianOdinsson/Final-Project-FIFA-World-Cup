@@ -1,5 +1,6 @@
 import os
 
+from routes.selection import selection_bp
 from database import db
 from dotenv import load_dotenv
 from flask import Flask
@@ -17,7 +18,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
 app.register_blueprint(user_bp)
-
+app.register_blueprint(selection_bp)
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
