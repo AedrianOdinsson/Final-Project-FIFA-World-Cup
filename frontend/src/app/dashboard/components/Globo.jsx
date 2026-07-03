@@ -28,7 +28,7 @@ export function Globo() {
     }, [colorMap, normalMap, specularMap]);
 
   return (
-    <group>
+    <group rotation={[0, Math.PI, 0]}>
       <mesh>
         <sphereGeometry args={[6, 64, 64]} />
         <meshStandardMaterial
