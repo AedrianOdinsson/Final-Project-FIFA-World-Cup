@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getCurrentUser } from "../lib/auth";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -15,6 +16,12 @@ export default function RegisterPage() {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (getCurrentUser()) {
+      router.replace("/dashboard");
+    }
+  }, [router]);
 
   async function handleRegister() {
     setError("");
