@@ -93,15 +93,8 @@ export function Ciudades({ onSelectStadium, selectedTeam }) {
     }; // cancela si el equipo cambia antes de terminar
   }, [selectedTeam, allMatches]);
 
-  useFrame(({ camera }) => {
-    if (!cameraTarget.current) return;
-    camera.position.lerp(cameraTarget.current, 0.04);
-    camera.lookAt(0, 0, 0);
-  });
-
   function handleClick(stadium) {
     setSelected(stadium.name);
-    cameraTarget.current = latLngToCameraPos(stadium.lat, stadium.lng, 14);
     if (onSelectStadium) onSelectStadium(stadium);
   }
 

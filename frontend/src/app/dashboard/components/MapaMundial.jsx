@@ -1,50 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { useState } from "react";
+import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { Globo } from "./Globo";
-import { Ciudades, latLngToCameraPos } from "./Ciudades";
+import { Ciudades } from "./Ciudades";
 
-function CameraFlight({ target }) {
-  useFrame(({ camera }) => {
-    if (!target) return;
-    camera.position.lerp(target, 0.04);
-    camera.lookAt(0, 0, 0);
-  });
-  return null;
-}
-
-export default function MapaMundial({ flyToCountry, selectedTeam }) {
+export default function MapaMundial({ selectedTeam }) {
   const [selectedStadium, setSelectedStadium] = useState(null);
-  const [cameraTarget, setCameraTarget] = useState(null);
-
-  // Geocodifica el país seleccionado y mueve la cámara hacia él
-  useEffect(() => {
-    if (!flyToCountry) return;
-    console.log("🌍 Geocodificando país:", flyToCountry);
-
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(flyToCountry)}&format=json&limit=1`;
-    fetch(url, { headers: { "Accept-Language": "es" } })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("🌍 Resultado geocoding:", data);
-        if (data.length > 0) {
-          const lat = parseFloat(data[0].lat);
-          const lng = parseFloat(data[0].lon);
-          console.log("🌍 Coordenadas:", lat, lng);
-          setCameraTarget(latLngToCameraPos(lat, lng, 14));
-        } else {
-          console.warn("⚠️ No se encontraron coordenadas para:", flyToCountry);
-        }
-      })
-      .catch((err) => console.error("❌ Error geocodificando país:", err));
-  }, [flyToCountry]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <Canvas
-        camera={{ position: [6, -2, 15], fov: 50 }}
+        camera={{ position: [0, 0, 16], fov: 50 }}
         style={{ width: "100%", height: "100%" }}
       >
         <ambientLight intensity={0.55} />
@@ -63,7 +31,6 @@ export default function MapaMundial({ flyToCountry, selectedTeam }) {
           onSelectStadium={setSelectedStadium}
           selectedTeam={selectedTeam}
         />
-        <CameraFlight target={cameraTarget} />
         <OrbitControls
           enablePan={false}
           rotateSpeed={0.2}

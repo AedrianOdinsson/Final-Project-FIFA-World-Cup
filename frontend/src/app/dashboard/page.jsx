@@ -17,7 +17,7 @@ export default function DashboardPage() {
       }}
     >
       {/* Mapa 3D de fondo */}
-      <MapaMundial flyToCountry={flyToCountry} selectedTeam={flyToCountry} />
+      <MapaMundial selectedTeam={flyToCountry} />
 
       {/* Panel título — arriba izquierda */}
       <div
