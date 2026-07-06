@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getCurrentUser, setCurrentUser } from "../lib/auth";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -10,6 +11,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (getCurrentUser()) {
+      router.replace("/dashboard");
+    }
+  }, [router]);
 
   async function handleLogin() {
     setError("");
@@ -25,6 +32,8 @@ export default function LoginPage() {
         setError(data.msg || "Credenciales inválidas");
         return;
       }
+      setCurrentUser(data.user);
+      router.push("/dashboard");
       router.push("/dashboard");
     } catch {
       setError("No se pudo conectar con el servidor");

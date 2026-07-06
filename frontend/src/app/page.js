@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import {
+import { Fragment, useState } from "react";
+ import {
   Plane,
   MapPin,
   TrendingUp,
@@ -391,12 +391,16 @@ export default function Home() {
               de los tres países anfitriones.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <button className="rounded-md bg-white px-5 py-2.5 text-sm font-bold text-black transition hover:bg-neutral-200">
-                Empezar Análisis →
-              </button>
-              <button className="flex items-center gap-2 rounded-md border border-neutral-700 px-5 py-2.5 text-sm font-bold text-white transition hover:border-neutral-500">
-                <MapIcon size={15} /> Ver Mapa en Vivo
-              </button>
+              <Link href="/dashboard/analysis">
+                <button className="rounded-md bg-white px-5 py-2.5 text-sm font-bold text-black transition hover:bg-neutral-200">
+                  Empezar Análisis →
+                </button>
+              </Link>
+              <Link href="/login">
+                <button className="flex items-center gap-2 rounded-md border border-neutral-700 px-5 py-2.5 text-sm font-bold text-white transition hover:border-neutral-500">
+                  <MapIcon size={15} /> Ver Mapa en Vivo
+                </button>
+              </Link>
             </div>
           </div>
           <div className="overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-950">
@@ -506,9 +510,11 @@ export default function Home() {
                   en tiempo real.
                 </p>
               </div>
-              <button className="mt-6 w-fit rounded-md border border-neutral-600 bg-black/40 px-4 py-2 text-[13px] font-bold text-white transition hover:border-neutral-400">
-                Abrir Mapa Completo
-              </button>
+              <Link href="/login" className="mt-6 w-fit">
+                <button className="w-fit rounded-md border border-neutral-600 bg-black/40 px-4 py-2 text-[13px] font-bold text-white transition hover:border-neutral-400">
+                  Abrir Mapa Completo
+                </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -551,9 +557,8 @@ export default function Home() {
                   const enTransito = i < 4;
                   const isOpen = open === e.pais;
                   return (
-                    <>
+                    <Fragment key={e.pais}>
                       <tr
-                        key={e.pais}
                         onClick={() => setOpen(isOpen ? null : e.pais)}
                         className="cursor-pointer transition hover:bg-neutral-950"
                       >
@@ -618,7 +623,7 @@ export default function Home() {
                           </td>
                         </tr>
                       )}
-                    </>
+                    </Fragment>
                   );
                 })}
               </tbody>

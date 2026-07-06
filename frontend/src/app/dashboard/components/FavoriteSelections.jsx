@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { getCurrentUser } from "../../lib/auth";
 
 const PHASES = [
   "Fase de Grupos",
@@ -22,7 +23,7 @@ export default function FavoriteSelectionPage() {
   const [error, setError] = useState("");
 
   // ── Carga equipos desde la API del mundial ──
-  useEffect(() => {
+  /*useEffect(() => {
     console.log("⚽ useEffect ejecutado");
     fetch(
       "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json",
@@ -66,6 +67,41 @@ export default function FavoriteSelectionPage() {
       })
       .catch(() => setError("No se pudieron cargar los equipos"))
       .finally(() => setLoading(false));
+  }, []);*/
+
+  useEffect(() => {
+    console.log("🌐 useEffect ejecutado");
+
+    fetch(
+      "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json",
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        const teamMap = new Map();
+
+        data.matches?.forEach((match) => {
+          // Solo los partidos de fase de grupos traen "group" (ej. "Group A").
+          // Los de eliminatoria usan placeholders como "2A" y no cuentan aquí.
+          if (!match.group) return;
+          if (match.team1 && !teamMap.has(match.team1)) {
+            teamMap.set(match.team1, match.group);
+          }
+          if (match.team2 && !teamMap.has(match.team2)) {
+            teamMap.set(match.team2, match.group);
+          }
+        });
+
+        const teamList = Array.from(teamMap.entries())
+          .map(([name, group]) => ({ name, group }))
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        setTeams(teamList);
+      })
+      .catch((err) => {
+        console.error("❌ Error completo:", err);
+        setError("No se pudieron cargar los equipos");
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   // ── Al elegir equipo, rellena el grupo automáticamente ──
@@ -78,11 +114,14 @@ export default function FavoriteSelectionPage() {
 
   // ── Guarda la selección ──
   async function handleSave() {
-    setError("");
-    setSuccess("");
-
     if (!selectedTeam || !selectedPhase) {
       setError("Selecciona un equipo y una fase");
+      return;
+    }
+
+    const user = getCurrentUser();
+    if (!user) {
+      setError("Tu sesión expiró, vuelve a iniciar sesión");
       return;
     }
 
@@ -92,7 +131,7 @@ export default function FavoriteSelectionPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          user_id: 1, // ← reemplazar por el id del usuario logueado
+          user_id: user.id,
           team_name: selectedTeam,
           group: selectedGroup,
           phase: selectedPhase,
