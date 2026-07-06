@@ -10,14 +10,12 @@ const PHASES = [
   "Final",
 ];
 
-export default function FavoriteSelectionPage() {
-  const [teams, setTeams] = useState([]); // [{ name, group }]
+export default function FavoriteSelectionPage({ onTeamSelect }) {
+  const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [selectedTeam, setSelectedTeam] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("");
   const [selectedPhase, setSelectedPhase] = useState("");
-
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -28,35 +26,24 @@ export default function FavoriteSelectionPage() {
     fetch(
       "https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json",
     )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(
-          "✅ Rounds:",
-          data.rounds?.map((r) => r.name),
-        );
-      })
-      .catch((err) => {
-        console.error("❌ Error completo:", err);
-        setError("No se pudieron cargar los equipos");
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        return res.json();
       })
       .then((data) => {
+        console.log("✅ Claves del JSON:", Object.keys(data));
+        console.log("✅ Nombre del round:", data.name);
+        console.log("✅ Nº de partidos:", data.matches?.length);
+
         const teamMap = new Map();
 
-        data.rounds?.forEach((round) => {
-          // Solo rounds de grupo (ej. "Group A", "Grupo A"...)
-          const isGroupStage =
-            round.name?.toLowerCase().includes("group") ||
-            round.name?.toLowerCase().includes("grupo");
-          if (!isGroupStage) return;
-
-          round.matches?.forEach((match) => {
-            if (match.team1 && !teamMap.has(match.team1)) {
-              teamMap.set(match.team1, round.name);
-            }
-            if (match.team2 && !teamMap.has(match.team2)) {
-              teamMap.set(match.team2, round.name);
-            }
-          });
+        data.matches?.forEach((match) => {
+          if (match.team1 && !teamMap.has(match.team1)) {
+            teamMap.set(match.team1, data.name || "Mundial 2026");
+          }
+          if (match.team2 && !teamMap.has(match.team2)) {
+            teamMap.set(match.team2, data.name || "Mundial 2026");
+          }
         });
 
         const teamList = Array.from(teamMap.entries())
@@ -65,7 +52,10 @@ export default function FavoriteSelectionPage() {
 
         setTeams(teamList);
       })
-      .catch(() => setError("No se pudieron cargar los equipos"))
+      .catch((err) => {
+        console.error("❌ Error completo:", err);
+        setError("No se pudieron cargar los equipos");
+      })
       .finally(() => setLoading(false));
   }, []);*/
 
@@ -104,15 +94,14 @@ export default function FavoriteSelectionPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  // ── Al elegir equipo, rellena el grupo automáticamente ──
   function handleTeamChange(e) {
     const name = e.target.value;
     setSelectedTeam(name);
     const found = teams.find((t) => t.name === name);
     setSelectedGroup(found ? found.group : "");
+    if (onTeamSelect) onTeamSelect(name);
   }
 
-  // ── Guarda la selección ──
   async function handleSave() {
     if (!selectedTeam || !selectedPhase) {
       setError("Selecciona un equipo y una fase");
@@ -179,7 +168,6 @@ export default function FavoriteSelectionPage() {
         )}
 
         <div className="flex flex-col gap-5">
-          {/* Equipo */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
               Equipo Favorito
@@ -200,7 +188,6 @@ export default function FavoriteSelectionPage() {
             </select>
           </div>
 
-          {/* Grupo — solo lectura, se rellena solo */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
               Grupo
@@ -216,7 +203,6 @@ export default function FavoriteSelectionPage() {
             </div>
           </div>
 
-          {/* Fase */}
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-gray-400 uppercase tracking-widest">
               Fase que alcanzará
@@ -237,7 +223,6 @@ export default function FavoriteSelectionPage() {
             </select>
           </div>
 
-          {/* Botón */}
           <button
             onClick={handleSave}
             disabled={saving}

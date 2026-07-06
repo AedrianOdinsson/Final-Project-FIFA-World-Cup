@@ -13,7 +13,7 @@ export default function MapaMundial({ selectedTeam }) {
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <Canvas
-        camera={{ position: [6, -2, 15], fov: 50 }}
+        camera={{ position: [0, 0, 16], fov: 50 }}
         style={{ width: "100%", height: "100%" }}
       >
         <ambientLight intensity={0.55} />
