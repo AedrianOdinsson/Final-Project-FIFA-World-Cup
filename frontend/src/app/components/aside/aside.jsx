@@ -85,7 +85,10 @@ export default function Aside() {
 
       <div className="flex-shrink-0 border-t border-[#2a2a2a]/50 px-4 pb-4 pt-3">
         {user && (
-          <div className="mb-3 flex items-center gap-2.5 rounded-lg border border-[#2a2a2a]/70 bg-[#161616] px-2.5 py-2">
+          <Link
+            href={"/dashboard/settings"}
+            className="mb-3 flex items-center gap-2.5 rounded-lg border border-[#2a2a2a]/70 bg-[#161616] px-2.5 py-2"
+          >
             <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-white text-[11px] font-bold text-black">
               {getInitials(user.name)}
             </div>
@@ -98,11 +101,8 @@ export default function Aside() {
                 Sesión activa
               </div>
             </div>
-          </div>
+          </Link>
         )}
-        <button className="mb-1 block w-full rounded-md bg-white py-[11px] text-center text-[12px] font-semibold tracking-[0.07em] text-black">
-          LIVE UPDATES
-        </button>
         <div className="flex cursor-pointer items-center gap-2.5 py-2.5 text-[13px] text-[#666666]">
           <LifeBuoy size={17} /> Support
         </div>
